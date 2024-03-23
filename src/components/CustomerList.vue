@@ -20,6 +20,10 @@
         </div>
         <div class="user-email">{{ data.item.email }}</div>
       </template>
+      <template v-slot:cell(balance)="data">
+        <img v-if="data.item.balance == 0" src="@/assets/paid.png" alt="Paid Icon" class="paid-icon" />
+        <span v-else>{{ data.item.balance }}</span>
+      </template>
     </b-table>
     <b-pagination v-model="currentPage" :total-rows="customers.length" :per-page="pageSize" aria-controls="customer-table"></b-pagination>
   </b-container>
@@ -122,5 +126,10 @@ export default {
   width: 20px;
   height: auto;
   cursor: pointer; 
+}
+
+.paid-icon {
+  width: 40px;
+  height: auto;
 }
 </style>

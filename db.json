@@ -1,16 +1,6 @@
 {
   "customers": [
     {
-      "status": "pending",
-      "name": "Carol Kautzer",
-      "email": "Micheal.Hettinger42@gmail.com",
-      "total": "0942.00",
-      "issued_date": "2023-11-02",
-      "balance": "0405.00",
-      "user_image": "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/555.jpg",
-      "id": "0019"
-    },
-    {
       "status": "overdue",
       "name": "Maggie Bailey",
       "email": "Melvina76@gmail.com",
@@ -439,6 +429,16 @@
       "total": "232323",
       "issuedDate": "2222-02-22",
       "balance": "222222"
+    },
+    {
+      "id": "00990099",
+      "status": "Pending",
+      "date": "2023-02-22",
+      "name": "asdas sasd",
+      "email": "222@asdas.com",
+      "total": "222",
+      "issuedDate": "2024-02-02",
+      "balance": "222"
     }
   ]
 }

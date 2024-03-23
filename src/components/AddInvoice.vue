@@ -10,20 +10,16 @@
           <option value="Paid">Paid</option>
           <option value="Overdue">Overdue</option>
         </select>
-        <label for="date">Date:</label>
-        <input type="date" id="date" v-model="newInvoice.date" required />
         <label for="name">Name:</label>
         <input type="text" id="name" v-model="newInvoice.name" required />
         <label for="email">Email:</label>
         <input type="email" id="email" v-model="newInvoice.email" required />
         <label for="total">Total:</label>
         <input type="number" id="total" v-model="newInvoice.total" required />
-        <label for="issuedDate">Issued Date:</label>
-        <input type="date" id="issuedDate" v-model="newInvoice.issuedDate" required />
+        <label for="issued_date">Issued Date:</label>
+        <input type="date" id="issued_date" v-model="newInvoice.issued_date" required />
         <label for="balance">Balance:</label>
         <input type="number" id="balance" v-model="newInvoice.balance" required />
-        <label for="id">ID:</label>
-        <input type="text" id="id" v-model="newInvoice.id" required />
         <button type="submit">Add Invoice</button>
       </form>
     </div>
@@ -38,13 +34,11 @@ export default {
     return {
       newInvoice: {
         status: 'Pending',
-        date: '',
         name: '',
         email: '',
         total: '',
-        issuedDate: '',
+        issued_date: '',
         balance: '',
-        id: ''
       }
     };
   },
