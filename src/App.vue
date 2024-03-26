@@ -6,7 +6,7 @@
         <SearchUserButton />
       </div>
       <AddInvoice v-if="showAddInvoiceModal" @close="showAddInvoiceModal = false" @invoiceAdded= "fetchInvoices"/>
-      <CustomerList :customers="customers" @customerDeleted="fetchInvoices" />
+      <CustomerList :customers="customers" @refreshList="fetchInvoices" @updateCustomer="updateCustomer" />
     </b-card>
   </div>
 </template>
@@ -22,7 +22,7 @@ export default {
     CustomerList,
     AddInvoice,
     BCard,
-    SearchUserButton
+    SearchUserButton,
   },
   data() {
     return {
@@ -41,9 +41,27 @@ export default {
           console.error('Error fetching invoices:', error);
         });
     },
-    deleteCustomer(index) {
-      this.customers.splice(index, 1);
-    }
+    updateCustomer({ index, updatedCustomer }) {
+      // Update the customers prop with the modified customer
+      this.$set(this.customers, index, updatedCustomer);
+      
+      // Make PUT request to update customer data on API backend
+      fetch(`${API_ENDPOINT}/customers/${updatedCustomer.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedCustomer),
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Failed to update customer data');
+        }
+      })
+      .catch(error => {
+        console.error('Error updating customer data:', error);
+      });
+    },
   },
   mounted() {
     this.fetchInvoices();
@@ -71,5 +89,5 @@ export default {
 .button-container {
   margin-bottom: 20px;
 }
+
 </style>
-./components/apiConfig

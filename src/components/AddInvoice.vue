@@ -72,7 +72,7 @@ export default {
 
 <style scoped>
 .modal {
-  display: flex;
+  display:inline-block;
   justify-content: center;
   align-items: center;
   position: fixed;
