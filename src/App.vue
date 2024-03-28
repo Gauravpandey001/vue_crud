@@ -1,11 +1,12 @@
 <template>
   <div class="container">
+    <loader-component :isLoading="loading"></loader-component>
     <b-card>
       <div class="button-container">
         <b-button @click="showAddInvoiceModal = true" class="custom-button">+ Create Invoice</b-button>
         <SearchUserButton />
       </div>
-      <AddInvoice v-if="showAddInvoiceModal" @close="showAddInvoiceModal = false" @invoiceAdded= "fetchInvoices"/>
+      <AddInvoice v-if="showAddInvoiceModal" @close="showAddInvoiceModal = false" @invoiceAdded="fetchInvoices"/>
       <CustomerList :customers="customers" @refreshList="fetchInvoices" @updateCustomer="updateCustomer" />
     </b-card>
   </div>
@@ -16,6 +17,7 @@ import { BCard } from 'bootstrap-vue';
 import CustomerList from './components/CustomerList.vue';
 import AddInvoice from './components/AddInvoice.vue';
 import SearchUserButton from './components/SearchUserButton.vue';
+import LoaderComponent from './components/LoaderComponent.vue'; 
 import { API_ENDPOINT } from './components/apiConfig';
 export default {
   components: {
@@ -23,15 +25,18 @@ export default {
     AddInvoice,
     BCard,
     SearchUserButton,
+    LoaderComponent 
   },
   data() {
     return {
       customers: [],
-      showAddInvoiceModal: false
+      showAddInvoiceModal: false,
+      loading: false 
     };
   },
   methods: {
     fetchInvoices() {
+      this.loading = true; 
       fetch(`${API_ENDPOINT}/customers`)
         .then(response => response.json())
         .then(data => {
@@ -39,12 +44,15 @@ export default {
         })
         .catch(error => {
           console.error('Error fetching invoices:', error);
+        })
+        .finally(() => {
+          this.loading = false;
         });
     },
     updateCustomer({ index, updatedCustomer }) {
       // Update the customers prop with the modified customer
       this.$set(this.customers, index, updatedCustomer);
-      
+      this.loading = true;
       // Make PUT request to update customer data on API backend
       fetch(`${API_ENDPOINT}/customers/${updatedCustomer.id}`, {
         method: 'PUT',
@@ -60,7 +68,10 @@ export default {
       })
       .catch(error => {
         console.error('Error updating customer data:', error);
-      });
+      })
+      .finally(() => {
+          this.loading = false;
+        });
     },
   },
   mounted() {
@@ -89,5 +100,4 @@ export default {
 .button-container {
   margin-bottom: 20px;
 }
-
 </style>

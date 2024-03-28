@@ -1,5 +1,6 @@
 <template>
-  <b-container fluid>
+  <div>
+    <loader-component :isLoading="loading"></loader-component>  <b-container fluid>
     <b-table hover :items="displayedCustomers" :fields="fields">
       <template v-slot:cell(action)="data">
         <div class="action-icons">
@@ -31,6 +32,7 @@
     </b-table>
     <b-pagination v-model="currentPage" :total-rows="customers.length" :per-page="pageSize" aria-controls="customer-table"></b-pagination>
   </b-container>
+</div>
 </template>
 
 <script>
@@ -38,6 +40,7 @@ import { BContainer, BTable, BPagination, BFormCheckbox} from 'bootstrap-vue';
 import { API_ENDPOINT } from './apiConfig.js';
 import ViewButton from '@/components/ViewButton.vue';
 import UpdateEntry from '@/components/UpdateEntry.vue';
+import LoaderComponent from '@/components/LoaderComponent.vue';
 export default {
   components: {
     BContainer,
@@ -45,7 +48,8 @@ export default {
     BPagination,
     BFormCheckbox,
     ViewButton,
-    UpdateEntry
+    UpdateEntry,
+    LoaderComponent
     },
   props: {
     customers: {
@@ -55,6 +59,7 @@ export default {
   },
   data() {
     return {
+      loading: false,
       currentPage: 1,
       pageSize: 10,
       fields: [
@@ -81,6 +86,7 @@ export default {
       this.$emit('refreshList');
     },
     deleteCustomer(customerId) {
+      this.loading=true;
       fetch(`${API_ENDPOINT}/customers/${customerId}`, {
         method: 'DELETE'
       })
@@ -92,7 +98,11 @@ export default {
       })
       .catch(error => {
         console.error('Error deleting customer:', error);
+      })
+      .finally(() => {
+        this.loading = false; 
       });
+
     },
     viewDetails(customer) {
       this.$emit('viewDetails', customer);
